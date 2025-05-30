@@ -3,12 +3,11 @@ import apriltag
 import numpy as np
 
 # Set up AprilTag detector
-options = apriltag.DetectorOptions(families='tag36h11')  # tagStandard41h12
+options = apriltag.DetectorOptions(families='tag36h11')  
 detector = apriltag.Detector(options)
 
 # Open the video file
-# video_path = "multiple_tags.mp4" 
-video_path = "shoreTest1.mp4"
+video_path = "shoreArray2.mp4"
 cap = cv2.VideoCapture(video_path)
 
 if not cap.isOpened():
@@ -16,8 +15,10 @@ if not cap.isOpened():
     exit()
 
 try:
+    frames = []  # To store frames for saving the final video
     while True:
         ret, frame = cap.read()
+
         if not ret:
             print("End of video or error reading frame.")
             break
@@ -42,9 +43,20 @@ try:
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
         cv2.imshow("AprilTag Detection", frame)
+        frames.append(frame)
         key = cv2.waitKey(1)
         if key == 27:  # Press 'ESC' to exit
             break
+
+
+
 finally:
+    # Save the processed frames as a video
+    height, width, layers = frames[0].shape
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter('output.mp4', fourcc, 30.0, (width, height))
+    for f in frames:
+        out.write(f)
+    out.release()
     cap.release()
     cv2.destroyAllWindows()
