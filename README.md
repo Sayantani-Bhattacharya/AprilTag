@@ -3,7 +3,14 @@
 - using downgraded python virtual env. </br>
 - Need to log the path-pose trajectory in csv.
 
+## dyn_tag_Detection
+- The downloaded video from blue OS Cockpit interface as input frame. pose tracking in cv show,family: tag16h5 </br>
+- using downgraded python virtual env. </br>
+- Need to log the path-pose trajectory in csv.
+- Need to log the path-pose trajectory in csv for 18 dynamic and 2 static markers.
 
+
+## Not used
 ## apriltag_video.py:
 - input is mp4, downloaded and modified from BlueOS Cockpit. </br>
 - Need to modify to make it work for tagStandard41h12 </br>
