@@ -1,3 +1,6 @@
+## To activate python environment:
+pyenv activate realsense-env
+
 ## static_tag_detection: 
 - RS as input frame, pose tracking in cv show,family: tag16h5 </br>
 - using downgraded python virtual env. </br>
@@ -12,6 +15,9 @@
 ## 6dPoseVisulalize.py:
 - Reads and plots the 3d pose path trajectory of the detected tags.
 
+## extDynDet
+- uses the direct real sense topics and does real-time pose detection. 
+- Need to save array, and transforms of relative pose, and plot stuff.
 
 ## Works but Not used.
 ## apriltag_video.py:
