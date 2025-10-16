@@ -13,7 +13,7 @@ options = apriltag.DetectorOptions(families='tag36h11')
 detector = apriltag.Detector(options)
 
 # Open the video file
-video_path = "shoreArray2.mp4"
+video_path = "T01.mp4"  #shoreArray2.mp4 | GlareCheck.mp4  | Last: "T4.mp4" Oct 14th
 cap = cv2.VideoCapture(video_path)
 
 if not cap.isOpened():
