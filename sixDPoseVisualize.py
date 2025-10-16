@@ -150,12 +150,24 @@ def plot_3d_relative_pose(ax_relative):
             ref_pose = next((rp for rp in ref_poses if rp[0] == frame_idx), None)
             if ref_pose is None:
                 continue
+
+            # Extract translation poses
             t = np.array([p[1], p[2], p[3]])
             t_ref = np.array([ref_pose[1], ref_pose[2], ref_pose[3]])
-            tx_rel.append(t[0] - t_ref[0])
-            ty_rel.append(t[1] - t_ref[1])
-            tz_rel.append(t[2] - t_ref[2])
+            # Extract rotation poses
+            R = R.from_quat(p[4:8]).as_matrix()
+            R_ref = R.from_quat(ref_pose[4:8]).as_matrix()
+
+            # Compute relative transformation
+            R_rel =  R_ref.T @ R
+            t_rel = R_ref.T @ (t - t_ref)
+
+            tx_rel.append(t_rel[0])
+            ty_rel.append(t_rel[1])
+            tz_rel.append(t_rel[2])      
+        
         ax_relative.plot(tx_rel, ty_rel, tz_rel, label=f'Tag {tag_id}')
+    
     ax_relative.set_xlabel('X rel to Static Tag')
     ax_relative.set_ylabel('Y rel to Static Tag')
     ax_relative.set_zlabel('Z rel to Static Tag')
@@ -191,16 +203,29 @@ def plot_relative_pose_indv(tag_id, ax_indv):
     tx_rel = []
     ty_rel = []
     tz_rel = []
+
     for p in poses:
         frame_idx = p[0]
         ref_pose = next((rp for rp in ref_poses if rp[0] == frame_idx), None)
         if ref_pose is None:
             continue
+
+        # Extract translation poses
         t = np.array([p[1], p[2], p[3]])
         t_ref = np.array([ref_pose[1], ref_pose[2], ref_pose[3]])
-        tx_rel.append(t[0] - t_ref[0])
-        ty_rel.append(t[1] - t_ref[1])
-        tz_rel.append(t[2] - t_ref[2])
+        # Extract rotation poses
+        R = R.from_quat(p[4:8]).as_matrix()
+        R_ref = R.from_quat(ref_pose[4:8]).as_matrix()
+
+        # Compute relative transformation
+        R_rel =  R_ref.T @ R
+        t_rel = R_ref.T @ (t - t_ref)
+
+        tx_rel.append(t_rel[0])
+        ty_rel.append(t_rel[1])
+        tz_rel.append(t_rel[2])
+    
+    
     ax_indv.plot(tx_rel, ty_rel, tz_rel, label=f'Relative Path of Tag {tag_id}')
     ax_indv.set_xlabel('X rel to Static Tag')
     ax_indv.set_ylabel('Y rel to Static Tag')
@@ -355,19 +380,15 @@ if __name__ == "__main__":
     fig, (ax_x, ax_y, ax_z) = plt.subplots(3, 1, figsize=(8, 12))
     fig.suptitle(f'Separate Axes of Tag Over Time')
 
-    
-
     while True:
         # plot_6d_pose(ax1)
         # plot_3d_relative_pose(ax2)
         # plot_relative_pose_indv(1, ax3)
         # plot_idv(1, ax4)
 
+        plot_idv(19, ax5, ax_x, ax_y, ax_z)                 ## x,y,z signals wrt time for a tag.
 
-        # plot_idv(1, ax5, ax_x, ax_y, ax_z)                 ## x,y,z signals wrt time for a tag.
-
-        plot_idv_denoised( 19, 1, ax5, ax_x, ax_y, ax_z)  ## x,y,z signals wrt time for a tag denoised by static tag
-
+        # plot_idv_denoised( 19, 1, ax5, ax_x, ax_y, ax_z)  ## x,y,z signals wrt time for a tag denoised by static tag
 
 
 
@@ -376,10 +397,11 @@ if __name__ == "__main__":
 
 
 
+# TODO: the denoising is not in reference to the static tag need to do that!!
 
 
-
-
+# To Note IMP:  
+# before usinf the ratationn part for the static tag relaative transform, and after the plot remains the same : Wierd, considering 45 degree tilt not same plane...??
 
 
 
