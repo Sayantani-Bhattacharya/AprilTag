@@ -1,2 +1,5 @@
 output.mp4
 tag_paths.csv
+*mp4
+Videos
+__pycache__
