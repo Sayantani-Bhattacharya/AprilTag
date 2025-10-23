@@ -62,6 +62,11 @@ T_C5 = np.array([[0, 0, 1, 0],
                 [-1, 0, 0, - cube_size / 2],
                 [0, 0, 0, 1]])
 
+# Relative poses global variable
+tx_rel = []
+ty_rel = []
+tz_rel = []
+
 
 def plot_6d_pose(ax):
     ax.clear()  # Clear the previous plot
@@ -200,9 +205,9 @@ def plot_relative_pose_indv(tag_id, ax_indv):
         return
     ref_poses = sorted(tag_paths[0], key=lambda x: x[0])
     poses = sorted(tag_paths[tag_id], key=lambda x: x[0])
-    tx_rel = []
-    ty_rel = []
-    tz_rel = []
+    # tx_rel = []
+    # ty_rel = []
+    # tz_rel = []
 
     for p in poses:
         frame_idx = p[0]
@@ -362,8 +367,10 @@ def plot_idv_denoised(moving_tag_id, static_tag_id, ax_indv_axis, ax_x = None, a
     plt.show()
     # plt.pause(0.01)
 
-
-
+def analysis_metrics():
+    pass
+    # orientation, vel stuff, pca, fft..
+    
 
 
 
