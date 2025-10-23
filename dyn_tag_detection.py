@@ -5,9 +5,18 @@ import csv
 from scipy.spatial.transform import Rotation as R
 
 # Camera intrinsics (fx, fy, cx, cy) and tag size (in meters)
-fx, fy, cx, cy = 600, 600, 320, 240  # Replace with your actual values
-tag_size = 0.16  # Replace with your actual tag size
 
+# # External Tag
+# fx, fy, cx, cy = 600, 600, 320, 240  
+# tag_size = 0.16  # Replace with your actual tag size                                    ---> IMP TO SWITCH 
+
+
+# Internal Tag
+fx, fy, cx, cy = 1806.68775, 1801.14087, 1882.18218, 1404.07528   # With OpenCV Calib Matrix.
+tag_size = 0.007725     # The black square width ≈ 0.75 × 10.3 mm = 7.725 mm.   || 10.3 mm is with border
+
+
+ 
 # Set up AprilTag detector
 options = apriltag.DetectorOptions(families='tag36h11')
 detector = apriltag.Detector(options)
