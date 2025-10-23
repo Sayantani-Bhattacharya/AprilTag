@@ -22,7 +22,7 @@ options = apriltag.DetectorOptions(families='tag36h11')
 detector = apriltag.Detector(options)
 
 # Open the video file
-video_path = "T01.mp4"  #shoreArray2.mp4 | GlareCheck.mp4  | Last: "T4.mp4" Oct 14th
+video_path = "T4.mp4"  #shoreArray2.mp4 | GlareCheck.mp4  | Last: "T4.mp4" Oct 14th
 cap = cv2.VideoCapture(video_path)
 
 if not cap.isOpened():
@@ -31,6 +31,7 @@ if not cap.isOpened():
 
 tag_paths = {}  # {tag_id: [(frame_idx, tx, ty, tz, qx, qy, qz, qw), ...]}
 frame_idx = 0
+total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))  # total frames in video
 
 try:
     frames = []
@@ -78,7 +79,7 @@ try:
 finally:
     # Save the processed frames as a video
     if frames:
-        height, width, layers = frames[0].shape
+        height, width, _ = frames[0].shape
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter('output.mp4', fourcc, 30.0, (width, height))
         for f in frames:
@@ -87,10 +88,19 @@ finally:
     cap.release()
     cv2.destroyAllWindows()
 
-    # Save tag paths to CSV
+    # Save tag poses to CSV
     with open('tag_paths.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['tag_id', 'frame_idx', 'tx', 'ty', 'tz', 'qx', 'qy', 'qz', 'qw'])
         for tag_id, poses in tag_paths.items():
             for pose in poses:
                 writer.writerow([tag_id] + list(pose))
+
+    # Compute and save stability metrics
+    with open('tag_stability.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['tag_id', 'stability_value'])
+        for tag_id, poses in tag_paths.items():
+            stability = len(poses) / total_frames if total_frames > 0 else 0
+            writer.writerow([tag_id, stability])
+    print("Stability metrics saved to tag_stability.csv")
