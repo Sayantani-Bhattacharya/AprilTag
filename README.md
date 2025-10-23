@@ -1,6 +1,8 @@
 ## To activate python environment:
 pyenv activate realsense-env
 
+Using python downgraded version of Python 3.10.13 from Python 3.12.3
+
 ## static_tag_detection: 
 - RS as input frame, pose tracking in cv show,family: tag16h5 </br>
 - using downgraded python virtual env. </br>

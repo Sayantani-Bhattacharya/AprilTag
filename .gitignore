@@ -1,5 +1,13 @@
 output.mp4
 tag_paths.csv
 *mp4
-Videos
+/Videos
 __pycache__
+venv/
+Videos/*.mp4
+/frames
+*.csv
+*.mkv
+*.mcap
+rosbag2_*
+
